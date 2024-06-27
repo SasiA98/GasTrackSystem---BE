@@ -1,0 +1,41 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+spring:
+  application:
+    name: @project.name@
+    version: @project.version@
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: smtpmail587sender@gmail.com
+    password: fyjkdbunyfvadrzn
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  jackson:
+    deserialization:
+      adjust-dates-to-context-time-zone: true
+    time-zone: UTC
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Europe/Rome
+
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+
+application:
+  jwt:
+    secretKey: Njs3Qodn8JDndpwm
+    cryptoKey: Qs23RBNF330ms00n
+
+    tokenDurationMs: 1800000
+    tokenRenewBeforeExpirationMs: 1800000

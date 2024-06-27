@@ -1,0 +1,34 @@
+logging:
+  level:
+    com.client.scs: DEBUG
+    org.client.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.flywaydb: DEBUG
+
+spring:
+  flyway:
+    enabled: true
+    baselineOnMigrate: true
+    validateOnMigrate: true
+    locations:
+      - classpath:mysql/schema
+      - classpath:mysql/dev-data
+
+  datasource:
+    url: jdbc:mysql://localhost:3307/db
+    username: root
+    password: root
+
+    jpa:
+    properties:
+      hibernate:
+        ddl :
+          auto : update
+          format_sql: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+application:
+  cors:
+    allowedOrigins: 'http://localhost:4200'

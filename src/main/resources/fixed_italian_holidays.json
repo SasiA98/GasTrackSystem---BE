@@ -1,0 +1,12 @@
+[
+  { "date": "01-01", "description": "Capodanno" },
+  { "date": "06-01", "description": "Epifania" },
+  { "date": "25-04", "description": "Festa della Liberazione" },
+  { "date": "01-05", "description": "Festa dei Lavoratori" },
+  { "date": "02-06", "description": "Festa della Repubblica" },
+  { "date": "15-08", "description": "Ferragosto" },
+  { "date": "01-11", "description": "Tutti i Santi" },
+  { "date": "08-12", "description": "Immacolata Concezione" },
+  { "date": "25-12", "description": "Natale" },
+  { "date": "26-12", "description": "Santo Stefano" }
+]
