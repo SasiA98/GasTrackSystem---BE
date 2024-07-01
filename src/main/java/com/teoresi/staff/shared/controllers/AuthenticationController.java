@@ -5,7 +5,7 @@ import com.teoresi.staff.security.dtos.AuthenticationResponseDTO;
 import com.teoresi.staff.security.services.AuthenticationService;
 import com.teoresi.staff.security.services.JwtService;
 import com.teoresi.staff.security.services.LoginAttemptService;
-import com.teoresi.staff.services.UserService;
+import com.teoresi.staff.services.old.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;

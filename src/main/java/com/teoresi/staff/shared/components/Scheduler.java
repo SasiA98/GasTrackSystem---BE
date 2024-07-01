@@ -1,8 +1,8 @@
 package com.teoresi.staff.shared.components;
 
-import com.teoresi.staff.services.customs.ProjectCostService;
-import com.teoresi.staff.services.customs.ResourceLoadService;
-import com.teoresi.staff.services.TimesheetService;
+import com.teoresi.staff.services.old.customs.ProjectCostService;
+import com.teoresi.staff.services.old.customs.ResourceLoadService;
+import com.teoresi.staff.services.old.TimesheetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

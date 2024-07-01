@@ -1,7 +1,7 @@
 package com.teoresi.staff.security.services;
 
-import com.teoresi.staff.entities.User;
-import com.teoresi.staff.repositories.UserRepository;
+import com.teoresi.staff.entities.old.User;
+import com.teoresi.staff.repositories.old.customs.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

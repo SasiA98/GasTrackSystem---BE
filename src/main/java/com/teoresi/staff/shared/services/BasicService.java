@@ -1,7 +1,7 @@
 package com.teoresi.staff.shared.services;
 
-import com.teoresi.staff.entities.Project;
-import com.teoresi.staff.entities.Resource;
+import com.teoresi.staff.entities.old.Project;
+import com.teoresi.staff.entities.old.Resource;
 import com.teoresi.staff.libs.data.models.IdentifiableEntity;
 import com.teoresi.staff.libs.data.repositories.CrudRepository;
 import com.teoresi.staff.libs.utils.ComparableWrapper;
@@ -9,8 +9,8 @@ import com.teoresi.staff.libs.utils.Holiday;
 import com.teoresi.staff.libs.utils.Pair;
 import com.teoresi.staff.security.models.JwtAuthentication;
 import com.teoresi.staff.security.services.SessionService;
-import com.teoresi.staff.services.customs.ProjectCostService;
-import com.teoresi.staff.services.customs.ResourceLoadService;
+import com.teoresi.staff.services.old.customs.ProjectCostService;
+import com.teoresi.staff.services.old.customs.ResourceLoadService;
 import com.teoresi.staff.shared.models.Role;
 import org.hibernate.exception.GenericJDBCException;
 import org.slf4j.Logger;

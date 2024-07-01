@@ -1,7 +1,7 @@
 package com.teoresi.staff.profile.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.teoresi.staff.dtos.ResourceDTO;
+import com.teoresi.staff.dtos.old.ResourceDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

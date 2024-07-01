@@ -91,3 +91,28 @@ INSERT INTO operation_manager (id, legal_entity, industry, name, trigram, roles,
 (61, 'Teoresi Inc.', 'Railway', 'Zachary W. Duncan', 'ZDU', 'BM', '?'),
 (62, 'Teoresi S.p.A.', 'Automotive', 'Angelo Terlizzi', 'ATE', 'BM', 'LSC'),
 (63, 'Teoresi S.p.A.', 'Railway', 'Federico Pagano', 'FEP', 'BM', 'RPI');
+
+
+INSERT INTO company (name, email, phone) VALUES
+    ('Tech Innovations Inc.', 'info@techinnovations.com', '123-456-7890'),
+    ('Green Energy Solutions', 'contact@greenenergy.com', '987-654-3210'),
+    ('HealthCare Partners Ltd.', 'support@healthcarepartners.com', '456-789-1234'),
+    ('Urban Development Co.', 'info@urbandevelopment.com', '321-654-9870'),
+    ('Global Finance Group', 'contact@globalfinance.com', '789-123-4567');
+
+
+INSERT INTO licence (licence_id, name) VALUES
+    ('LIC001', 'Software Development Licence'),
+    ('LIC002', 'Environmental Compliance Licence'),
+    ('LIC003', 'Medical Practice Licence'),
+    ('LIC004', 'Construction Permit'),
+    ('LIC005', 'Financial Advisory Licence');
+
+
+INSERT INTO company_licence (company_id, licence_id, start_date, end_date) VALUES
+    (1, 1, '2022-01-01', '2023-01-01'),
+    (2, 2, '2021-06-15', '2023-06-15'),
+    (3, 3, '2020-09-01', '2025-09-01'),
+    (4, 4, '2019-03-20', '2024-03-20'),
+    (5, 5, '2023-01-01', '2024-01-01');
+

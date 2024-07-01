@@ -3,7 +3,7 @@ VALUES
     (1, 'OPR', 'Delivery Unit', 'Enabled'),
     (2, 'D11', 'Delivery Unit', 'Enabled'),
     (3, 'D21', 'Delivery Unit', 'Enabled'),
-    (4, 'D31', 'Delivery Unit', 'Enabled'),
+    (4, 'D31', 'Deliveray Unit', 'Enabled'),
     (5, 'D41', 'Delivery Unit', 'Enabled'),
     (6, 'CD1', 'Delivery Unit', 'Enabled');
 

@@ -1,9 +1,9 @@
 package com.teoresi.staff.profile.controllers;
 
 import com.teoresi.staff.profile.dtos.PatchProfileDTO;
-import com.teoresi.staff.dtos.UserDTO;
-import com.teoresi.staff.entities.User;
-import com.teoresi.staff.mappers.UserMapper;
+import com.teoresi.staff.dtos.old.UserDTO;
+import com.teoresi.staff.entities.old.User;
+import com.teoresi.staff.mappers.old.UserMapper;
 import com.teoresi.staff.security.models.JwtAuthentication;
 import com.teoresi.staff.profile.services.ProfileService;
 import lombok.RequiredArgsConstructor;

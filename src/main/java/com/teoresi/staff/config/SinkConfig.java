@@ -1,7 +1,7 @@
 package com.teoresi.staff.config;
 
-import com.teoresi.staff.dtos.ImportResourceDTO;
-import com.teoresi.staff.dtos.ImportTimesheetDTO;
+import com.teoresi.staff.dtos.old.ImportResourceDTO;
+import com.teoresi.staff.dtos.old.ImportTimesheetDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

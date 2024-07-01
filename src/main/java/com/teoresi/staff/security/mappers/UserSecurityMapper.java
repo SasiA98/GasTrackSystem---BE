@@ -1,7 +1,7 @@
 package com.teoresi.staff.security.mappers;
 
 import com.teoresi.staff.security.models.UserSecurityDetails;
-import com.teoresi.staff.entities.User;
+import com.teoresi.staff.entities.old.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

@@ -1,8 +1,8 @@
 package com.teoresi.staff.security.services;
 
 import com.teoresi.staff.security.mappers.UserSecurityMapper;
-import com.teoresi.staff.entities.User;
-import com.teoresi.staff.repositories.UserRepository;
+import com.teoresi.staff.entities.old.User;
+import com.teoresi.staff.repositories.old.customs.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

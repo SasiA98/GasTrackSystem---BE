@@ -1,6 +1,6 @@
 package com.teoresi.staff.libs.utils;
 
-import com.teoresi.staff.dtos.ImportTimesheetDTO;
+import com.teoresi.staff.dtos.old.ImportTimesheetDTO;
 import com.teoresi.staff.libs.data.models.TimesheetExcel;
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.poi.ss.usermodel.*;

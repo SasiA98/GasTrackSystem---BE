@@ -1,8 +1,8 @@
 package com.teoresi.staff.profile.services;
 
-import com.teoresi.staff.entities.User;
+import com.teoresi.staff.entities.old.User;
 import com.teoresi.staff.security.models.JwtAuthentication;
-import com.teoresi.staff.services.UserService;
+import com.teoresi.staff.services.old.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;

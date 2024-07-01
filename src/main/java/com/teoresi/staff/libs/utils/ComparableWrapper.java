@@ -1,7 +1,7 @@
 package com.teoresi.staff.libs.utils;
 
 
-import com.teoresi.staff.entities.Resource;
+import com.teoresi.staff.entities.old.Resource;
 import com.teoresi.staff.shared.models.Role;
 import org.jetbrains.annotations.NotNull;
 

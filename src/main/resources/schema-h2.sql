@@ -250,3 +250,31 @@ CREATE TABLE resource_skill (
     FOREIGN KEY (skill_id) REFERENCES skill(id),
     FOREIGN KEY (resource_id) REFERENCES resource(id)
 );
+
+
+CREATE TABLE company (
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name          VARCHAR(255) NOT NULL,
+    email         VARCHAR(255) NOT NULL,
+    phone         VARCHAR(15) NOT NULL
+);
+
+
+CREATE TABLE licence (
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    licence_id    VARCHAR(255) NOT NULL,
+    name          VARCHAR(255) NOT NULL
+);
+
+
+CREATE TABLE company_licence (
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    company_id    BIGINT,
+    licence_id    BIGINT,
+    start_date   DATE NOT NULL,
+    end_date     DATE NOT NULL,
+
+    FOREIGN KEY (company_id) REFERENCES company(id),
+    FOREIGN KEY (licence_id) REFERENCES licence(id)
+);
+

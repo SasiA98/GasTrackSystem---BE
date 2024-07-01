@@ -1,6 +1,6 @@
 package com.teoresi.staff.libs.utils;
 
-import com.teoresi.staff.dtos.ImportResourceDTO;
+import com.teoresi.staff.dtos.old.ImportResourceDTO;
 import com.teoresi.staff.libs.data.models.ResourceExcel;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
