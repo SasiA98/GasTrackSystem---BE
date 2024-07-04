@@ -260,21 +260,12 @@ CREATE TABLE company (
 );
 
 
-CREATE TABLE licence (
-    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
-    licence_id    VARCHAR(255) NOT NULL,
-    name          VARCHAR(255) NOT NULL
-);
-
-
 CREATE TABLE company_licence (
-    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
-    company_id    BIGINT,
-    licence_id    BIGINT,
-    start_date   DATE NOT NULL,
-    end_date     DATE NOT NULL,
+    id              BIGINT AUTO_INCREMENT PRIMARY KEY,
+    licence_name    VARCHAR(255) NOT NULL,
+    company_id      BIGINT,
+    expiry_date     DATE NOT NULL,
 
-    FOREIGN KEY (company_id) REFERENCES company(id),
-    FOREIGN KEY (licence_id) REFERENCES licence(id)
+    FOREIGN KEY (company_id) REFERENCES company(id)
 );
 

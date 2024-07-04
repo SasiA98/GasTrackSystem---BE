@@ -15,11 +15,7 @@ public class CompanyLicenceDTO {
 
     @EqualsAndHashCode.Include
     private long id;
-    private Long companyId;
-    private Long licenceId;
-    private String companyName;
+    private CompanyDTO company;
     private String licenceName;
-
-    private Date startDate;
-    private Date endDate;
+    private Date expiryDate;
 }

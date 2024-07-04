@@ -1,5 +1,7 @@
 package com.teoresi.staff.components;
 
+import com.teoresi.staff.controllers.CompanyController;
+import com.teoresi.staff.entities.Company;
 import com.teoresi.staff.entities.CompanyLicence;
 import com.teoresi.staff.libs.data.components.SpecificationFactory;
 import com.teoresi.staff.libs.data.models.SimpleFilterOperator;
@@ -13,17 +15,17 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Set;
 
 @Component
-public class CompanyLicenceSpecificationsFactory implements SpecificationFactory<CompanyLicence> {
+public class CompanySpecificationsFactory implements SpecificationFactory<Company> {
 
     private final Set<String> searchableFields = Set.of("id",
-            "licenceName");
-    private final Set<String> searchableSubfields = Set.of(
-            "company.name");
+            "name",
+            "email");
+    private final Set<String> searchableSubfields = Set.of();
 
-    private final Logger logger = LoggerFactory.getLogger(CompanyLicenceSpecificationsFactory.class);
+    private final Logger logger = LoggerFactory.getLogger(CompanySpecificationsFactory.class);
 
     @Override
-    public Specification<CompanyLicence> createSpecification(String fieldName, SimpleFilterOperator operator, String value) {
+    public Specification<Company> createSpecification(String fieldName, SimpleFilterOperator operator, String value) {
         if (searchableFields.contains(fieldName)) {
             return buildFieldSpecification(fieldName, operator, value);
         } else if (searchableSubfields.contains(fieldName)) {
@@ -34,7 +36,7 @@ public class CompanyLicenceSpecificationsFactory implements SpecificationFactory
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
     }
 
-    private Specification<CompanyLicence> buildSubfieldSpecification(String fieldName, SimpleFilterOperator operator, String value) {
+    private Specification<Company> buildSubfieldSpecification(String fieldName, SimpleFilterOperator operator, String value) {
         switch (operator) {
             case EQUALS:
                 return buildSubfieldIsEqualSpecification(fieldName, value);
@@ -52,7 +54,7 @@ public class CompanyLicenceSpecificationsFactory implements SpecificationFactory
         }
     }
 
-    private Specification<CompanyLicence> buildFieldSpecification(String fieldName, SimpleFilterOperator operator, String value) {
+    private Specification<Company> buildFieldSpecification(String fieldName, SimpleFilterOperator operator, String value) {
         switch (operator) {
             case EQUALS:
                 return buildFieldIsEqualSpecification(fieldName, value);

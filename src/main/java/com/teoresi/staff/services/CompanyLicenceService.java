@@ -4,6 +4,7 @@ import com.teoresi.staff.components.CompanyLicenceSpecificationsFactory;
 import com.teoresi.staff.entities.CompanyLicence;
 import com.teoresi.staff.libs.data.models.Filter;
 import com.teoresi.staff.repositories.CompanyLicenceRepository;
+import com.teoresi.staff.security.services.SessionService;
 import com.teoresi.staff.shared.services.BasicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +25,10 @@ public class CompanyLicenceService extends BasicService {
     private final CompanyLicenceRepository companyLicenceRepository;
     private final CompanyLicenceSpecificationsFactory companyLicenceSpecificationsFactory;
     private final Logger logger = LoggerFactory.getLogger(CompanyLicenceService.class);
-    private static final String COMPANY_LICENCE_ID_NOT_FOUND = "Unit with id %d not found.";
+    private static final String COMPANY_ID_NOT_FOUND = "Company with id %d not found.";
 
-    public CompanyLicenceService(CompanyLicenceRepository companyLicenceRepository, CompanyLicenceSpecificationsFactory companyLicenceSpecificationsFactory) {
+    public CompanyLicenceService(SessionService sessionService, CompanyLicenceRepository companyLicenceRepository, CompanyLicenceSpecificationsFactory companyLicenceSpecificationsFactory) {
+        super(sessionService, LoggerFactory.getLogger(CompanyLicenceService.class));
         this.companyLicenceRepository = companyLicenceRepository;
         this.companyLicenceSpecificationsFactory = companyLicenceSpecificationsFactory;
     }
@@ -38,17 +40,17 @@ public class CompanyLicenceService extends BasicService {
 
     public CompanyLicence update(CompanyLicence companyLicence) {
         if (!companyLicenceRepository.existsById(companyLicence.getId())) {
-            throw buildEntityWithIdNotFoundException(companyLicence.getId(), COMPANY_LICENCE_ID_NOT_FOUND);
+            throw buildEntityWithIdNotFoundException(companyLicence.getId(), COMPANY_ID_NOT_FOUND);
         }
         return save(companyLicenceRepository, companyLicence);
     }
 
     public CompanyLicence getById(Long id) {
-        return getById(companyLicenceRepository, id, COMPANY_LICENCE_ID_NOT_FOUND);
+        return getById(companyLicenceRepository, id, COMPANY_ID_NOT_FOUND);
     }
 
     public void deleteById(Long id) {
-        deleteById(companyLicenceRepository, id, COMPANY_LICENCE_ID_NOT_FOUND);
+        deleteById(companyLicenceRepository, id, COMPANY_ID_NOT_FOUND);
     }
 
     public List<CompanyLicence> getAll(){

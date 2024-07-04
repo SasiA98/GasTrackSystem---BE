@@ -14,4 +14,6 @@ public class CompanyDTO {
     @EqualsAndHashCode.Include
     private long id;
     private String name;
+    private String email;
+    private String phone;
 }

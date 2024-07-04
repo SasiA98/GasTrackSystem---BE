@@ -101,18 +101,10 @@ INSERT INTO company (name, email, phone) VALUES
     ('Global Finance Group', 'contact@globalfinance.com', '789-123-4567');
 
 
-INSERT INTO licence (licence_id, name) VALUES
-    ('LIC001', 'Software Development Licence'),
-    ('LIC002', 'Environmental Compliance Licence'),
-    ('LIC003', 'Medical Practice Licence'),
-    ('LIC004', 'Construction Permit'),
-    ('LIC005', 'Financial Advisory Licence');
-
-
-INSERT INTO company_licence (company_id, licence_id, start_date, end_date) VALUES
-    (1, 1, '2022-01-01', '2023-01-01'),
-    (2, 2, '2021-06-15', '2023-06-15'),
-    (3, 3, '2020-09-01', '2025-09-01'),
-    (4, 4, '2019-03-20', '2024-03-20'),
-    (5, 5, '2023-01-01', '2024-01-01');
+INSERT INTO company_licence (company_id, licence_name, expiry_date) VALUES
+    (1, 'Software Development Licence', '2023-01-01'),
+    (2, 'Environmental Compliance Licence', '2023-06-15'),
+    (3, 'Medical Practice Licence', '2025-09-01'),
+    (4, 'Medical Practice Licence', '2024-03-20'),
+    (5, 'Financial Advisory Licence', '2024-01-01');
 

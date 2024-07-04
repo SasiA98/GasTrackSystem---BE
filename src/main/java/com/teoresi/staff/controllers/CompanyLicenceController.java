@@ -27,6 +27,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("company-licences")
+@PreAuthorize("hasAnyAuthority('ADMIN')")
 public class CompanyLicenceController {
 
     private final CompanyLicenceService companyLicenceService;
@@ -38,21 +39,18 @@ public class CompanyLicenceController {
     // ------------------------------  REQUIREMENTS SATISFIED ------------------------------ //
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public CompanyLicenceDTO create(@Valid @RequestBody CompanyLicenceDTO companyLicenceDTO) throws IOException, ParseException, InterruptedException {
         CompanyLicence companyLicence = companyLicenceMapper.convertDtoToModel(companyLicenceDTO);
         return companyLicenceMapper.convertModelToDTO(companyLicenceService.create(companyLicence));
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'GDM', 'DUM')")
     public CompanyLicenceDTO update(@PathVariable Long id, @Valid @RequestBody CompanyLicenceDTO companyLicenceDTO) {
         companyLicenceDTO.setId(id);
         CompanyLicence companyLicence = companyLicenceMapper.convertDtoToModel(companyLicenceDTO);
         return companyLicenceMapper.convertModelToDTO(companyLicenceService.update(companyLicence));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/advanced-search")
     public PageDTO<CompanyLicenceDTO> searchAdvanced(
             @RequestBody(required = false) Optional<Filter<CompanyLicence>> filter,
@@ -63,19 +61,16 @@ public class CompanyLicenceController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN',)")
     public void deleteById(@PathVariable Long id) {
         companyLicenceService.deleteById(id);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public CompanyLicenceDTO getById(@PathVariable Long id) {
         return companyLicenceMapper.convertModelToDTO(companyLicenceService.getById(id));
     }
 
     @GetMapping("/")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public List<CompanyLicenceDTO> getAll() {
         return companyLicenceMapper.convertModelsToDtos(companyLicenceService.getAll());
     }

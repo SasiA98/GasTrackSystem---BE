@@ -2,12 +2,14 @@ package com.teoresi.staff.entities;
 
 import com.teoresi.staff.shared.entities.BasicEntity;
 import lombok.*;
+import org.openxmlformats.schemas.drawingml.x2006.chart.STGrouping;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.util.Date;
+import java.util.SimpleTimeZone;
 
 @Data
 @Builder
@@ -18,23 +20,12 @@ import java.util.Date;
 public class CompanyLicence extends BasicEntity implements Cloneable{
 
     private Long id;
-    private Date endDate;
-    private Date startDate;
-
-    @ManyToOne
-    @JoinColumn(name = "licence_id")
-    private Licence licence;
+    private Date expiryDate;
+    private String licenceName;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
-
-    public Long getCompanyId(){ return this.company != null ? this.company.getId() : null; }
-    public Long getLicenceId(){ return this.licence != null ? this.licence.getId() : null; }
-
-
-    public String getLicenceName(){ return this.licence != null ? this.licence.getName() : null; }
-    public String getCompanyName(){ return this.company != null ? this.company.getName() : null; }
 
     @Override
     public CompanyLicence clone() {
