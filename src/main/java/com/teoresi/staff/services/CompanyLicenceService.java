@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,13 +26,16 @@ public class CompanyLicenceService extends BasicService {
 
     private final CompanyLicenceRepository companyLicenceRepository;
     private final CompanyLicenceSpecificationsFactory companyLicenceSpecificationsFactory;
+
+    private final LicenceExpiryEmailService emailService;
     private final Logger logger = LoggerFactory.getLogger(CompanyLicenceService.class);
     private static final String COMPANY_ID_NOT_FOUND = "Company with id %d not found.";
 
-    public CompanyLicenceService(SessionService sessionService, CompanyLicenceRepository companyLicenceRepository, CompanyLicenceSpecificationsFactory companyLicenceSpecificationsFactory) {
+    public CompanyLicenceService(SessionService sessionService, CompanyLicenceRepository companyLicenceRepository, CompanyLicenceSpecificationsFactory companyLicenceSpecificationsFactory, LicenceExpiryEmailService emailService) {
         super(sessionService, LoggerFactory.getLogger(CompanyLicenceService.class));
         this.companyLicenceRepository = companyLicenceRepository;
         this.companyLicenceSpecificationsFactory = companyLicenceSpecificationsFactory;
+        this.emailService = emailService;
     }
 
     public CompanyLicence create(CompanyLicence companyLicence) {
@@ -58,7 +63,6 @@ public class CompanyLicenceService extends BasicService {
     }
 
 
-
     public Page<CompanyLicence> searchAdvanced(Optional<Filter<CompanyLicence>> filter, Pageable pageable) {
         try {
             return filter.map(companyLicenceFilter ->
@@ -75,4 +79,24 @@ public class CompanyLicenceService extends BasicService {
         return companyLicenceFilter.toSpecification(companyLicenceSpecificationsFactory);
     }
 
+    public CompanyLicence sendEmailById(Long id) {
+        CompanyLicence companyLicence = getById(id);
+        emailService.notifyCompanyAboutLicence(companyLicence);
+        return companyLicence;
+    }
+
+    public void notifyAboutExpiringLicence() {
+        List<CompanyLicence> companyLicences = getAll();
+        LocalDate currentDate = getLocalDate(new Date());
+
+        for (CompanyLicence companyLicence : companyLicences){
+            LocalDate expiryDate = getLocalDate(companyLicence.getExpiryDate()).minusMonths(1);
+
+            if(expiryDate.isEqual(currentDate) || expiryDate.isAfter(currentDate))
+                if(!companyLicence.isEmailSent()) {
+                    emailService.notifyCompanyAboutLicence(companyLicence);
+                    companyLicence.setEmailSent(true);
+                }
+        }
+    }
 }

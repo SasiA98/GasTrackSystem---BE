@@ -54,6 +54,11 @@ public class CompanyController {
         return companyMapper.convertModelsToDtos(companyService.getAll());
     }
 
+    @GetMapping("/{id}")
+    public CompanyDTO getById(@PathVariable Long id) {
+        return companyMapper.convertModelToDTO(companyService.getById(id));
+    }
+
     @PostMapping("/advanced-search")
     public PageDTO<CompanyDTO> searchAdvanced(
             @RequestBody(required = false) Optional<Filter<Company>> filter,

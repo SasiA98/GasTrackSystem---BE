@@ -2,6 +2,7 @@ package com.teoresi.staff.entities;
 
 import com.teoresi.staff.shared.entities.BasicEntity;
 import lombok.*;
+import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 import org.openxmlformats.schemas.drawingml.x2006.chart.STGrouping;
 
 import javax.persistence.Entity;
@@ -21,11 +22,17 @@ public class CompanyLicence extends BasicEntity implements Cloneable{
 
     private Long id;
     private Date expiryDate;
-    private String licenceName;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "licence_id")
+    private Licence licence;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
+
+
+    private boolean emailSent;
 
     @Override
     public CompanyLicence clone() {
@@ -35,4 +42,7 @@ public class CompanyLicence extends BasicEntity implements Cloneable{
             throw new AssertionError();
         }
     }
+
+
+    public String getIsEmailSent(){ return this.emailSent ? "SI" : "NO"; }
 }

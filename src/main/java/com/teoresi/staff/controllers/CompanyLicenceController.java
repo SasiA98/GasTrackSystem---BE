@@ -75,4 +75,9 @@ public class CompanyLicenceController {
         return companyLicenceMapper.convertModelsToDtos(companyLicenceService.getAll());
     }
 
+    @PostMapping("/{id}/send-email")
+    public CompanyLicenceDTO sendEmail(@PathVariable Long id) {
+        return companyLicenceMapper.convertModelToDTO(companyLicenceService.sendEmailById(id));
+    }
+
 }

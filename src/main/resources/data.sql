@@ -94,17 +94,24 @@ INSERT INTO operation_manager (id, legal_entity, industry, name, trigram, roles,
 
 
 INSERT INTO company (name, email, phone) VALUES
-    ('Tech Innovations Inc.', 'info@techinnovations.com', '123-456-7890'),
-    ('Green Energy Solutions', 'contact@greenenergy.com', '987-654-3210'),
-    ('HealthCare Partners Ltd.', 'support@healthcarepartners.com', '456-789-1234'),
-    ('Urban Development Co.', 'info@urbandevelopment.com', '321-654-9870'),
-    ('Global Finance Group', 'contact@globalfinance.com', '789-123-4567');
+    ('Tech Innovations Inc.', 'sasygoll@gmail.com', '123-456-7890'),
+    ('Green Energy Solutions', 'amodio.bernardo@gmail.com', '987-654-3210'),
+    ('HealthCare Partners Ltd.', 'sasi.amodio98@gmail.com', '456-789-1234'),
+    ('Urban Development Co.', 'sasygoll@gmail.com', '321-654-9870'),
+    ('Global Finance Group', 'sasi.amodio98@gmail.com', '789-123-4567');
 
 
-INSERT INTO company_licence (company_id, licence_name, expiry_date) VALUES
-    (1, 'Software Development Licence', '2023-01-01'),
-    (2, 'Environmental Compliance Licence', '2023-06-15'),
-    (3, 'Medical Practice Licence', '2025-09-01'),
-    (4, 'Medical Practice Licence', '2024-03-20'),
-    (5, 'Financial Advisory Licence', '2024-01-01');
+INSERT INTO licence (note, name) VALUES
+    ('LIC001', 'Software Development Licence'),
+    ('LIC002', 'Environmental Compliance Licence'),
+    ('LIC003', 'Medical Practice Licence'),
+    ('LIC004', 'Construction Permit'),
+    ('LIC005', 'Financial Advisory Licence');
+
+INSERT INTO company_licence (company_id, licence_id, expiry_date) VALUES
+    (1, 1, '2023-01-01'),
+    (2, 2, '2023-06-15'),
+    (3, 3, '2025-09-01'),
+    (4, 1, '2024-03-20'),
+    (5, 4, '2024-01-01');
 

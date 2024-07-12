@@ -1,7 +1,7 @@
 package com.teoresi.staff.mappers;
 
-import com.teoresi.staff.dtos.CompanyDTO;
-import com.teoresi.staff.entities.Company;
+import com.teoresi.staff.dtos.LicenceDTO;
+import com.teoresi.staff.entities.Licence;
 import com.teoresi.staff.libs.web.dtos.PageDTO;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
@@ -11,16 +11,16 @@ import java.util.List;
 
 @Mapper(componentModel = "spring",
         builder = @Builder(disableBuilder = true))
-public interface CompanyMapper {
+public interface LicenceMapper {
 
-    Company convertDtoToModel(CompanyDTO companyDTO);
+    Licence convertDtoToModel(LicenceDTO licenceDTO);
 
-    CompanyDTO convertModelToDTO(Company company);
+    LicenceDTO convertModelToDTO(Licence licence);
 
-    List<CompanyDTO> convertModelsToDtos(List<Company> companies);
+    List<LicenceDTO> convertModelsToDtos(List<Licence> companies);
 
-    default PageDTO<CompanyDTO> convertModelsPageToDtosPage(Page<Company> modelsPage) {
-        return PageDTO.<CompanyDTO>builder()
+    default PageDTO<LicenceDTO> convertModelsPageToDtosPage(Page<Licence> modelsPage) {
+        return PageDTO.<LicenceDTO>builder()
                 .content(convertModelsToDtos(modelsPage.getContent()))
                 .first(modelsPage.isFirst())
                 .last(modelsPage.isLast())

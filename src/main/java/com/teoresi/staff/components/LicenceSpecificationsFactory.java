@@ -1,6 +1,7 @@
 package com.teoresi.staff.components;
 
-import com.teoresi.staff.entities.CompanyLicence;
+import com.teoresi.staff.entities.Company;
+import com.teoresi.staff.entities.Licence;
 import com.teoresi.staff.libs.data.components.SpecificationFactory;
 import com.teoresi.staff.libs.data.models.SimpleFilterOperator;
 import org.slf4j.Logger;
@@ -10,26 +11,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Set;
 
 @Component
-public class CompanyLicenceSpecificationsFactory implements SpecificationFactory<CompanyLicence> {
+public class LicenceSpecificationsFactory implements SpecificationFactory<Licence> {
 
     private final Set<String> searchableFields = Set.of("id",
-            "expiryDate");
-    private final Set<String> searchableSubfields = Set.of(
-            "company.name",
-            "licence.name");
+            "name");
+    private final Set<String> searchableSubfields = Set.of();
 
-    private static final String DATA_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    private static final String INVALID_DATA_PARSING = "Parsing must follow this format" + DATA_PATTERN;
-    private final Logger logger = LoggerFactory.getLogger(CompanyLicenceSpecificationsFactory.class);
+    private final Logger logger = LoggerFactory.getLogger(LicenceSpecificationsFactory.class);
 
     @Override
-    public Specification<CompanyLicence> createSpecification(String fieldName, SimpleFilterOperator operator, String value) {
+    public Specification<Licence> createSpecification(String fieldName, SimpleFilterOperator operator, String value) {
         if (searchableFields.contains(fieldName)) {
             return buildFieldSpecification(fieldName, operator, value);
         } else if (searchableSubfields.contains(fieldName)) {
@@ -40,7 +34,7 @@ public class CompanyLicenceSpecificationsFactory implements SpecificationFactory
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
     }
 
-    private Specification<CompanyLicence> buildSubfieldSpecification(String fieldName, SimpleFilterOperator operator, String value) {
+    private Specification<Licence> buildSubfieldSpecification(String fieldName, SimpleFilterOperator operator, String value) {
         switch (operator) {
             case EQUALS:
                 return buildSubfieldIsEqualSpecification(fieldName, value);
@@ -49,44 +43,21 @@ public class CompanyLicenceSpecificationsFactory implements SpecificationFactory
             case IS_LTE:
                 return buildSubFieldGreaterThanSpecification(fieldName, Integer.parseInt(value));
 
-
             default: {
                 String message = String
                         .format("Search using operator %s and field %s is not implemented.", operator.name(), fieldName);
                 logger.debug(message);
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
             }
-
         }
     }
 
-    private Specification<CompanyLicence> buildFieldSpecification(String fieldName, SimpleFilterOperator operator, String value) {
+    private Specification<Licence> buildFieldSpecification(String fieldName, SimpleFilterOperator operator, String value) {
         switch (operator) {
             case EQUALS:
                 return buildFieldIsEqualSpecification(fieldName, value);
             case IS_LIKE:
                 return buildFieldIsLikeIgnoreCaseSpecification(fieldName, value);
-            case IS_DATE_LTE:
-
-                try {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat(DATA_PATTERN);
-                    Date date = dateFormat.parse(value);
-                    return buildFieldDateLessThanSpecification(fieldName, date);
-                } catch (ParseException e) {
-                    String message = String.format(INVALID_DATA_PARSING, e.getMessage());
-                    logger.debug(message);
-                }
-
-
-            case IS_DATE_GTE:
-                try {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat(DATA_PATTERN);
-                    Date date = dateFormat.parse(value);
-                    return buildFieldDateGreaterThanSpecification(fieldName, date);
-                } catch (ParseException e) {
-                    String message = String.format(INVALID_DATA_PARSING, e.getMessage());
-                    logger.debug(message);
-                }
 
             default: {
                 String message = String

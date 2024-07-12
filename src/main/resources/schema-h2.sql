@@ -256,16 +256,23 @@ CREATE TABLE company (
     id            BIGINT AUTO_INCREMENT PRIMARY KEY,
     name          VARCHAR(255) NOT NULL,
     email         VARCHAR(255) NOT NULL,
-    phone         VARCHAR(15) NOT NULL
+    phone         VARCHAR(15)
 );
 
+CREATE TABLE licence (
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name          VARCHAR(255) NOT NULL,
+    note          VARCHAR(255)
+);
 
 CREATE TABLE company_licence (
     id              BIGINT AUTO_INCREMENT PRIMARY KEY,
-    licence_name    VARCHAR(255) NOT NULL,
+    licence_id      BIGINT,
     company_id      BIGINT,
+    email_sent      BOOLEAN DEFAULT FALSE,
     expiry_date     DATE NOT NULL,
 
-    FOREIGN KEY (company_id) REFERENCES company(id)
+    FOREIGN KEY (company_id) REFERENCES company(id),
+    FOREIGN KEY (licence_id) REFERENCES licence(id)
 );
 
