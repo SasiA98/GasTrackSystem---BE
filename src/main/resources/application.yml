@@ -3,9 +3,16 @@ server:
   error:
     include-message: always
 spring:
+
   application:
     name: @project.name@
     version: @project.version@
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
   mail:
     host: smtp.gmail.com
     port: 587

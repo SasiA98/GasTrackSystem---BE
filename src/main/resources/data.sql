@@ -92,13 +92,14 @@ INSERT INTO operation_manager (id, legal_entity, industry, name, trigram, roles,
 (62, 'Teoresi S.p.A.', 'Automotive', 'Angelo Terlizzi', 'ATE', 'BM', 'LSC'),
 (63, 'Teoresi S.p.A.', 'Railway', 'Federico Pagano', 'FEP', 'BM', 'RPI');
 
+/*
 
-INSERT INTO company (name, email, phone) VALUES
-    ('Tech Innovations Inc.', 'sasygoll@gmail.com', '123-456-7890'),
-    ('Green Energy Solutions', 'amodio.bernardo@gmail.com', '987-654-3210'),
-    ('HealthCare Partners Ltd.', 'sasi.amodio98@gmail.com', '456-789-1234'),
-    ('Urban Development Co.', 'sasygoll@gmail.com', '321-654-9870'),
-    ('Global Finance Group', 'sasi.amodio98@gmail.com', '789-123-4567');
+INSERT INTO company (name, email, phone, documents_directory) VALUES
+    ('Tech Innovations Inc.', 'sasygoll@gmail.com', '123-456-7890', 'tii'),
+    ('Green Energy Solutions', 'amodio.bernardo@gmail.com', '987-654-3210', 'ges'),
+    ('HealthCare Partners Ltd.', 'sasi.amodio98@gmail.com', '456-789-1234', 'hpl'),
+    ('Urban Development Co.', 'sasygoll@gmail.com', '321-654-9870', 'udc'),
+    ('Global Finance Group', 'sasi.amodio98@gmail.com', '789-123-4567', 'gpg');
 
 
 INSERT INTO licence (note, name) VALUES
@@ -115,3 +116,4 @@ INSERT INTO company_licence (company_id, licence_id, expiry_date) VALUES
     (4, 1, '2024-03-20'),
     (5, 4, '2024-01-01');
 
+*/

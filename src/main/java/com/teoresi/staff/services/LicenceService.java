@@ -35,6 +35,8 @@ public class LicenceService extends BasicService {
 
     public Licence create(Licence licence) {
         licence.setId(null);
+        String fileName = Licence.computeDirectory(licence);
+        licence.setDirectory(fileName);
         return save(licenceRepository, licence);
     }
 

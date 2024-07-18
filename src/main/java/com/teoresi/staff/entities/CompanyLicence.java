@@ -2,15 +2,12 @@ package com.teoresi.staff.entities;
 
 import com.teoresi.staff.shared.entities.BasicEntity;
 import lombok.*;
-import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
-import org.openxmlformats.schemas.drawingml.x2006.chart.STGrouping;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.util.Date;
-import java.util.SimpleTimeZone;
 
 @Data
 @Builder
@@ -31,8 +28,14 @@ public class CompanyLicence extends BasicEntity implements Cloneable{
     @JoinColumn(name = "company_id")
     private Company company;
 
-
     private boolean emailSent;
+
+    private String directory;
+
+
+    public static String computeDirectory(Company company, Licence licence) {
+        return company.getDirectory() + licence.getDirectory();
+    }
 
     @Override
     public CompanyLicence clone() {

@@ -16,6 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +39,18 @@ public class CompanyService extends BasicService {
 
     public Company create(Company company) {
         company.setId(null);
-        return save(companyRepository, company);
+
+        try {
+            String documentDirectory = Company.computeDirectory(company);
+            Path path = Paths.get(ARCHIVE_DIRECTORY + documentDirectory);
+            Files.createDirectories(path);
+            company.setDirectory(documentDirectory);
+            return save(companyRepository, company);
+
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public Company update(Company company) {

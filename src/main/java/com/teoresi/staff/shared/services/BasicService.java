@@ -47,6 +47,8 @@ public abstract class BasicService {
     protected static final String SAVING_ENTITY = "Saving entity: {}";
     protected static final String SAVED_ENTITY = "Entity saved successfully";
     protected static final String USER_DESCRIPTION = "User : {}";
+    protected static final String ARCHIVE_DIRECTORY = "archive/";
+
 
     private ResourceLoadService resourceLoadService;
     private ProjectCostService projectCostService;

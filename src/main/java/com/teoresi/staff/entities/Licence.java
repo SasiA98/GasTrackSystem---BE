@@ -4,6 +4,8 @@ import com.teoresi.staff.shared.entities.BasicEntity;
 import lombok.*;
 
 import javax.persistence.Entity;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @Builder
@@ -17,6 +19,14 @@ public class Licence extends BasicEntity implements Cloneable{
     private String name;
     private String note;
 
+    private String directory;
+
+    public static String computeDirectory(Licence licence) {
+        String name = licence.getName();
+        name = name.replaceAll("[^a-zA-Z0-9]", "").trim();
+        return name + "-" + getTimestamp() + "/";
+    }
+
     @Override
     public Licence clone() {
         try {
@@ -26,4 +36,9 @@ public class Licence extends BasicEntity implements Cloneable{
         }
     }
 
+    private static String getTimestamp() {
+        LocalDateTime timestamp = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        return timestamp.format(formatter);
+    }
 }

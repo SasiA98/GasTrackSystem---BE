@@ -253,16 +253,19 @@ CREATE TABLE resource_skill (
 
 
 CREATE TABLE company (
-    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name          VARCHAR(255) NOT NULL,
-    email         VARCHAR(255) NOT NULL,
-    phone         VARCHAR(15)
+    id                  BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name                VARCHAR(255) NOT NULL,
+    email               VARCHAR(255) NOT NULL,
+    phone               VARCHAR(15),
+    directory           VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE licence (
-    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name          VARCHAR(255) NOT NULL,
-    note          VARCHAR(255)
+    id                  BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name                VARCHAR(255) NOT NULL,
+    note                VARCHAR(255),
+    directory           VARCHAR(255) NOT NULL
+
 );
 
 CREATE TABLE company_licence (
@@ -271,6 +274,7 @@ CREATE TABLE company_licence (
     company_id      BIGINT,
     email_sent      BOOLEAN DEFAULT FALSE,
     expiry_date     DATE NOT NULL,
+    directory       VARCHAR(255) NOT NULL,
 
     FOREIGN KEY (company_id) REFERENCES company(id),
     FOREIGN KEY (licence_id) REFERENCES licence(id)
