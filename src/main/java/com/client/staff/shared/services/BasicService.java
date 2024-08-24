@@ -40,10 +40,9 @@ public abstract class BasicService {
     }
 
 
-    protected <T extends IdentifiableEntity<K>, K> T save(CrudRepository<T, K> repository, T entity) {
+    protected  <T extends IdentifiableEntity<K>,K> T save (CrudRepository<T,K> repository, T entity){
         try {
-            if (sessionService.getCurrentUser() != null)
-                logger.info(USER_DESCRIPTION, sessionService.getCurrentUser().getUsername());
+            if(sessionService.getCurrentUser() != null) logger.info(USER_DESCRIPTION, sessionService.getCurrentUser().getUsername());
 
             logger.info(SAVING_ENTITY, entity.toString());
             entity = repository.save(entity);
@@ -51,28 +50,39 @@ public abstract class BasicService {
             return entity;
 
         } catch (JpaSystemException ex) {
-            Throwable cause = ex.getCause();
-            String errorMessage = cause.getMessage();
-            String errorState;
 
-            if (cause instanceof GenericJDBCException) {
-                errorState = ((GenericJDBCException) cause).getSQLException().getSQLState();
-
-                if (errorState.equals(USER_DEFINED_SQL_EXCEPTION))
-                    errorMessage = ((GenericJDBCException) cause).getSQLException().getMessage();
-                else if (errorState.equals(COULD_NOT_EXECUTE_STATEMENT_ERROR)) {
-                    errorMessage = ((GenericJDBCException) cause).getSQLException().getMessage();
-                }
-            }
-
+            String errorMessage = handleJpaException(ex);
             logger.error(errorMessage);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
 
         } catch (DataIntegrityViolationException ex) {
-            String message = String.format(CONSTRAINT_VIOLATION, "");
-            logger.error(message);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
+            String errorMessage = handleDataIntegrityViolationException(ex);
+            logger.error(errorMessage);
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
+    }
+
+    protected String handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        return CONSTRAINT_VIOLATION;
+    }
+
+    protected String handleJpaException(JpaSystemException ex){
+        Throwable cause = ex.getCause();
+        String errorMessage = cause.getMessage();
+        String errorState;
+        if (cause instanceof GenericJDBCException) {
+
+            errorState = ((GenericJDBCException) cause).getSQLException().getSQLState();
+
+            if (errorState.equals(USER_DEFINED_SQL_EXCEPTION))
+                errorMessage = ((GenericJDBCException) cause).getSQLException().getMessage();
+            else if(errorState.equals(COULD_NOT_EXECUTE_STATEMENT_ERROR)){
+                errorMessage = ((GenericJDBCException) cause).getSQLException().getMessage();
+            }
+        }
+
+        return errorMessage;
     }
 
     protected <T extends IdentifiableEntity<K>, K> T getById(CrudRepository<T, K> repository, K id, String msg) {

@@ -10,6 +10,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
+import java.util.Set;
 
 @Service
 public class LicenceExpiryEmailService extends BasicService {
@@ -28,24 +29,76 @@ public class LicenceExpiryEmailService extends BasicService {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-            helper.setTo(companyLicence.getCompany().getEmail());
+            Set<String> companyEmails = companyLicence.getCompany().getEmails();
 
-            helper.setSubject("La Licenza sta per scadere!!");
-            String messageText = "Messaggio di prova per notificare che " +
-                    "la licenza : " + companyLicence.getLicence().getName() +
-                    " scadrà in data " + getLocalDate(companyLicence.getExpiryDate()) + "!!" + "<br><br>";
-            helper.setText(messageText, true);
+            for (String email : companyEmails) {
 
-            javaMailSender.send(message);
+                helper.setTo(email);
 
-            String msg = "Expiring licence email has been set to the client";
-            logger.debug(msg);
+                helper.setSubject("La Licenza sta per scadere!!");
+                String messageText = "Messaggio di prova per notificare che " +
+                        "la licenza : " + companyLicence.getLicence().getName() +
+                        " scadrà in data " + getLocalDate(companyLicence.getExpiryDate()) + "!!" + "<br><br>";
+                helper.setText(messageText, true);
 
+                javaMailSender.send(message);
+
+                String msg = "Expiring licence email has been set to the client";
+                logger.debug(msg);
+
+            }
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to send email", e);
         }
+    }
 
+    public void notifyCompanyAboutLicence2(CompanyLicence companyLicence) {
+        try {
+            Set<String> companyEmails = companyLicence.getCompany().getEmails();
+            String subject = "Avviso di Scadenza Licenza";
+            String messageText = buildEmailContent(companyLicence);
+
+            for (String email : companyEmails) {
+                sendEmail(email, subject, messageText);
+            }
+
+            logger.debug("Expiring licence emails have been sent to the clients");
+
+        } catch (Exception e) {
+            logger.error("Failed to send email", e);
+            throw new RuntimeException("Failed to send email", e);
+        }
+    }
+
+
+    private void sendEmail(String email, String subject, String messageText) throws Exception {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, "UTF-8");
+
+        helper.setTo(email);
+        helper.setSubject(subject);
+        helper.setText(messageText, true); // Enable HTML
+
+        javaMailSender.send(message);
+    }
+
+    private String buildEmailContent(CompanyLicence companyLicence) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>")
+                .append("<body>")
+                .append("<p>Gentile Cliente,</p>")
+                .append("<p>La licenza <strong>")
+                .append(companyLicence.getLicence().getName())
+                .append("</strong> scadrà in data <strong>")
+                .append(getLocalDate(companyLicence.getExpiryDate()))
+                .append("</strong>.</p>")
+                .append("<p>La invitiamo a prendere le necessarie azioni per rinnovare la licenza.</p>")
+                .append("<p>Grazie per la sua attenzione.</p>")
+                .append("<br><p>Distinti saluti,<br>Il Team</p>")
+                .append("</body>")
+                .append("</html>");
+        return sb.toString();
     }
 
 }

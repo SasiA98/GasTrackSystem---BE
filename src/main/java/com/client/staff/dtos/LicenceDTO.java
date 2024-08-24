@@ -15,4 +15,5 @@ public class LicenceDTO {
     private long id;
     private String name;
     private String note;
+
 }

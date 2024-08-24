@@ -1,18 +1,19 @@
 
 INSERT INTO resource (id, email, name, surname)
 VALUES
-  (1, 'admin@email.com', 'Admin', 'Admin');
+  (1, 'fraquinta@gmail.com', 'Francesco', 'Quintaluce');
 
 INSERT INTO resources_roles (resource_id, role) VALUES
     (1, 'ADMIN');
 
 
 INSERT INTO user (id, resource_id, password, status) VALUES
-    (1, 1, '$2a$10$EGcbnw2xbw39nlYCWyQuc.0Q9GwZxraLr7n8dNmimZNqPACGaiky.','Enabled');
+    (1, 1, '$2b$12$d9Wfwl1dXntiX3WDJ79bz.O/tdkH5XPv/tSJxzvHk2wU2bq9hludi','Enabled');
+
 
 /*
 
-INSERT INTO company (name, email, phone, documents_directory) VALUES
+INSERT INTO company (name, first_email, phone, documents_directory) VALUES
     ('Tech Innovations Inc.', 'sasygoll@gmail.com', '123-456-7890', 'tii'),
     ('Green Energy Solutions', 'amodio.bernardo@gmail.com', '987-654-3210', 'ges'),
     ('HealthCare Partners Ltd.', 'sasi.amodio98@gmail.com', '456-789-1234', 'hpl'),

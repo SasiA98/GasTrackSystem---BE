@@ -27,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +59,13 @@ public class CompanyLicenceService extends BasicService {
         Company company = companyService.getById(companyLicence.getCompany().getId());
         Licence licence = licenceService.getById(companyLicence.getLicence().getId());
         String directory = CompanyLicence.computeDirectory(company, licence);
+
+        if(companyLicence.getExpiryDate() == null) {
+            Date date = Date.from(LocalDate.of(2100, 1, 1)
+                            .atStartOfDay()
+                                    .atZone(ZoneId.systemDefault()).toInstant());
+            companyLicence.setExpiryDate(date);
+        }
 
         try {
             Path path = Paths.get(ARCHIVE_DIRECTORY + directory);
@@ -157,17 +165,19 @@ public class CompanyLicenceService extends BasicService {
     }
 
     public void notifyAboutExpiringLicence() {
-        List<CompanyLicence> companyLicences = getAll();
-        LocalDate currentDate = getLocalDate(new Date());
+        LocalDate notificationDate = LocalDate.now().minusMonths(1);
 
-        for (CompanyLicence companyLicence : companyLicences){
-            LocalDate expiryDate = getLocalDate(companyLicence.getExpiryDate()).minusMonths(1);
+        for (CompanyLicence licence : getAll()) {
+            LocalDate expiryDate = getLocalDate(licence.getExpiryDate());
 
-            if(expiryDate.isEqual(currentDate) || expiryDate.isAfter(currentDate))
-                if(!companyLicence.isEmailSent()) {
-                    emailService.notifyCompanyAboutLicence(companyLicence);
-                    companyLicence.setEmailSent(true);
-                }
+            if (expiryDate != null && !licence.isEmailSent() && !expiryDate.isBefore(notificationDate)) {
+                emailService.notifyCompanyAboutLicence2(licence);
+                licence.setEmailSent(true);
+            }
         }
+    }
+
+    public List<CompanyLicence> getAllByCompanyId(Long id) {
+        return companyLicenceRepository.findAllByCompanyId(id);
     }
 }

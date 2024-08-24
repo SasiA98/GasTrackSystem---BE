@@ -8,6 +8,7 @@ import com.client.staff.security.services.SessionService;
 import com.client.staff.shared.services.BasicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -29,7 +30,8 @@ public class CompanyService extends BasicService {
     private final CompanyRepository companyRepository;
     private final CompanySpecificationsFactory companySpecificationsFactory;
     private final Logger logger = LoggerFactory.getLogger(CompanyService.class);
-    private static final String COMPANY_LICENCE_ID_NOT_FOUND = "Unit with id %d not found.";
+    private static final String COMPANY_LICENCE_ID_NOT_FOUND = "Punto vendita con id %d non trovato";
+    private static final String COMPANY_NAME_UNIQUE_ERROR = "Esiste un punto vendita con lo stesso nome";
 
     public CompanyService(SessionService sessionService, CompanyRepository companyRepository, CompanySpecificationsFactory companySpecificationsFactory) {
         super(sessionService, LoggerFactory.getLogger(CompanyService.class));
@@ -54,10 +56,22 @@ public class CompanyService extends BasicService {
     }
 
     public Company update(Company company) {
-        if (!companyRepository.existsById(company.getId())) {
-            throw buildEntityWithIdNotFoundException(company.getId(), COMPANY_LICENCE_ID_NOT_FOUND);
-        }
+        Company storedCompany = getById(company.getId());
+        company.setDirectory(storedCompany.getDirectory());
         return save(companyRepository, company);
+    }
+
+    @Override
+    protected String handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        String message = CONSTRAINT_VIOLATION;
+
+        if (ex.getCause() != null) {
+            String detailedMessage = ex.getCause().getCause().getMessage();
+            if (detailedMessage.contains("company_name_unique")) {
+                message = COMPANY_NAME_UNIQUE_ERROR;
+            }
+        }
+        return message;
     }
 
     public Company getById(Long id) {

@@ -14,6 +14,15 @@ public class CompanyDTO {
     @EqualsAndHashCode.Include
     private long id;
     private String name;
-    private String email;
+    private String owner;
+    private String regione;
+    private String provincia;
+    private String citta;
+    private String address;
+    private String code;
+    private String firstEmail;
+    private String secondEmail;
+    private String thirdEmail;
     private String phone;
+    private String note;
 }

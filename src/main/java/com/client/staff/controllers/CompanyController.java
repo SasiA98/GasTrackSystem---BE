@@ -1,10 +1,13 @@
 package com.client.staff.controllers;
 
 import com.client.staff.dtos.CompanyDTO;
+import com.client.staff.dtos.CompanyLicenceDTO;
 import com.client.staff.entities.Company;
 import com.client.staff.libs.data.models.Filter;
 import com.client.staff.libs.web.dtos.PageDTO;
+import com.client.staff.mappers.CompanyLicenceMapper;
 import com.client.staff.mappers.CompanyMapper;
+import com.client.staff.services.CompanyLicenceService;
 import com.client.staff.services.CompanyService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +33,9 @@ import java.util.Optional;
 public class CompanyController {
 
     private final CompanyService companyService;
+    private final CompanyLicenceService companyLicenceService;
     private final CompanyMapper companyMapper;
+    private final CompanyLicenceMapper companyLicenceMapper;
     private final Logger logger = LoggerFactory.getLogger(CompanyService.class);
 
 
@@ -53,6 +58,12 @@ public class CompanyController {
     public List<CompanyDTO> getAll() {
         return companyMapper.convertModelsToDtos(companyService.getAll());
     }
+
+    @GetMapping("/{id}/company-licences")
+    public List<CompanyLicenceDTO> getAllCompanyLicencesById(@PathVariable Long id) {
+        return companyLicenceMapper.convertModelsToDtos(companyLicenceService.getAllByCompanyId(id));
+    }
+
 
     @GetMapping("/{id}")
     public CompanyDTO getById(@PathVariable Long id) {

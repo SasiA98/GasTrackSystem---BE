@@ -8,6 +8,7 @@ import com.client.staff.security.services.SessionService;
 import com.client.staff.shared.services.BasicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -25,7 +26,8 @@ public class LicenceService extends BasicService {
     private final LicenceRepository licenceRepository;
     private final LicenceSpecificationsFactory licenceSpecificationsFactory;
     private final Logger logger = LoggerFactory.getLogger(LicenceService.class);
-    private static final String LICENCE_ID_NOT_FOUND = "Unit with id %d not found.";
+    private static final String LICENCE_ID_NOT_FOUND = "Licenza con id %d non trovata";
+    private static final String LICENCE_NAME_UNIQUE_ERROR = "Esiste una licenza con lo stesso nome";
 
     public LicenceService(SessionService sessionService, LicenceRepository licenceRepository, LicenceSpecificationsFactory companySpecificationsFactory) {
         super(sessionService, LoggerFactory.getLogger(LicenceService.class));
@@ -41,11 +43,24 @@ public class LicenceService extends BasicService {
     }
 
     public Licence update(Licence licence) {
-        if (!licenceRepository.existsById(licence.getId())) {
-            throw buildEntityWithIdNotFoundException(licence.getId(), LICENCE_ID_NOT_FOUND);
-        }
+        Licence storedLicence = getById(licence.getId());
+        licence.setDirectory(storedLicence.getDirectory());
         return save(licenceRepository, licence);
     }
+
+    @Override
+    protected String handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        String message = CONSTRAINT_VIOLATION;
+
+        if (ex.getCause() != null) {
+            String detailedMessage = ex.getCause().getCause().getMessage();
+            if (detailedMessage.contains("licence_name_unique")) {
+                message = LICENCE_NAME_UNIQUE_ERROR;
+            }
+        }
+        return message;
+    }
+
 
     public Licence getById(Long id) {
         return getById(licenceRepository, id, LICENCE_ID_NOT_FOUND);
