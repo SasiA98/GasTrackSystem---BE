@@ -1,34 +1,31 @@
 logging:
   level:
-    com.client.scs: DEBUG
-    org.client.SQL: DEBUG
+    com.client.staff: DEBUG
+    org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    org.flywaydb: DEBUG
-
 spring:
   flyway:
-    enabled: true
-    baselineOnMigrate: true
-    validateOnMigrate: true
-    locations:
-      - classpath:mysql/schema
-      - classpath:mysql/dev-data
-
+    enabled: false
+  sql:
+    init:
+      mode: never
+      platform: h2
   datasource:
-    url: jdbc:mysql://localhost:3307/db
-    username: root
-    password: root
-
-    jpa:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:~/h2/staff/staff-be
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     properties:
       hibernate:
-        ddl :
-          auto : update
-          format_sql: true
-  jpa:
-    hibernate:
-      ddl-auto: update
-
+        format_sql: true
+        show_sql: ture
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
 application:
   cors:
     allowedOrigins: 'http://localhost:4200'

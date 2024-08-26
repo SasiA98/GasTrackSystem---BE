@@ -8,7 +8,7 @@ spring:
     enabled: false
   sql:
     init:
-      mode: never
+      mode: always
       platform: h2
   datasource:
     driverClassName: org.h2.Driver
