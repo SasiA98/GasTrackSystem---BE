@@ -24,36 +24,6 @@ public class LicenceExpiryEmailService extends BasicService {
     }
 
     public void notifyCompanyAboutLicence(CompanyLicence companyLicence) {
-
-        try {
-            MimeMessage message = javaMailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-            Set<String> companyEmails = companyLicence.getCompany().getEmails();
-
-            for (String email : companyEmails) {
-
-                helper.setTo(email);
-
-                helper.setSubject("La Licenza sta per scadere!!");
-                String messageText = "Messaggio di prova per notificare che " +
-                        "la licenza : " + companyLicence.getLicence().getName() +
-                        " scadrà in data " + getLocalDate(companyLicence.getExpiryDate()) + "!!" + "<br><br>";
-                helper.setText(messageText, true);
-
-                javaMailSender.send(message);
-
-                String msg = "Expiring licence email has been set to the client";
-                logger.debug(msg);
-
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to send email", e);
-        }
-    }
-
-    public void notifyCompanyAboutLicence2(CompanyLicence companyLicence) {
         try {
             Set<String> companyEmails = companyLicence.getCompany().getEmails();
             String subject = "Avviso di Scadenza Licenza";

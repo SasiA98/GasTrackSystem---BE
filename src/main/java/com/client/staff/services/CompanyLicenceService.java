@@ -72,7 +72,10 @@ public class CompanyLicenceService extends BasicService {
             Files.createDirectories(path);
 
             companyLicence.setDirectory(directory);
-            return save(companyLicenceRepository, companyLicence);
+            companyLicence = save(companyLicenceRepository, companyLicence);
+            notifyCompany(companyLicence);
+
+            return companyLicence;
         } catch (IOException e) {
             logger.error(e.getMessage());
             throw new RuntimeException(e.getMessage());
@@ -164,18 +167,26 @@ public class CompanyLicenceService extends BasicService {
         return companyLicence;
     }
 
-    public void notifyAboutExpiringLicence() {
-        LocalDate notificationDate = LocalDate.now().minusMonths(1);
-
+    public void notifyAboutExpiringLicences() {
         for (CompanyLicence licence : getAll()) {
-            LocalDate expiryDate = getLocalDate(licence.getExpiryDate());
+           notifyCompany(licence);
+        }
+    }
 
-            if (expiryDate != null && !licence.isEmailSent() && !expiryDate.isBefore(notificationDate)) {
-                emailService.notifyCompanyAboutLicence2(licence);
-                licence.setEmailSent(true);
+    public void notifyCompany(CompanyLicence companyLicence){
+        LocalDate notificationDate = LocalDate.now().plusMonths(1);
+
+        if(companyLicence.getExpiryDate() != null) {
+            LocalDate expiryDate = getLocalDate(companyLicence.getExpiryDate());
+
+            if (expiryDate != null && !companyLicence.isEmailSent() && !expiryDate.isAfter(notificationDate)) {
+                emailService.notifyCompanyAboutLicence(companyLicence);
+                companyLicence.setEmailSent(true);
+                save(companyLicenceRepository, companyLicence);
             }
         }
     }
+
 
     public List<CompanyLicence> getAllByCompanyId(Long id) {
         return companyLicenceRepository.findAllByCompanyId(id);
