@@ -75,10 +75,6 @@ public class CompanyLicenceService extends BasicService {
             companyLicence = save(companyLicenceRepository, companyLicence);
 
             notifyCompany(getById(companyLicence.getId()));
-
-            if(companyLicence.isEmailSent())
-                companyLicence = save(companyLicenceRepository, companyLicence);
-
             return companyLicence;
         } catch (IOException e) {
             logger.error(e.getMessage());
@@ -178,8 +174,8 @@ public class CompanyLicenceService extends BasicService {
     }
 
     public void notifyAboutExpiringLicences() {
-        for (CompanyLicence licence : getAll()) {
-           notifyCompany(licence);
+        for (CompanyLicence companyLicence : getAll()) {
+           notifyCompany(companyLicence);
         }
     }
 
@@ -190,9 +186,9 @@ public class CompanyLicenceService extends BasicService {
             LocalDate expiryDate = getLocalDate(companyLicence.getExpiryDate());
 
             if (!companyLicence.isEmailSent() && !expiryDate.isAfter(notificationDate)) {
-                emailService.notifyCompanyAboutLicence(companyLicence);
                 companyLicence.setEmailSent(true);
                 save(companyLicenceRepository, companyLicence);
+                emailService.notifyCompanyAboutLicence(companyLicence);
             }
         }
     }
