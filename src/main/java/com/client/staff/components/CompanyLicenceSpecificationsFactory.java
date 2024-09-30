@@ -66,6 +66,10 @@ public class CompanyLicenceSpecificationsFactory implements SpecificationFactory
                 return buildFieldIsEqualSpecification(fieldName, value);
             case IS_LIKE:
                 return buildFieldIsLikeIgnoreCaseSpecification(fieldName, value);
+
+            case IS_NULL:
+                return buildFieldIsNullSpecification(fieldName);
+
             case IS_DATE_LTE:
 
                 try {

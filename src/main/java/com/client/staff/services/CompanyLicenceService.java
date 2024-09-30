@@ -45,6 +45,12 @@ public class CompanyLicenceService extends BasicService {
     private final Logger logger = LoggerFactory.getLogger(CompanyLicenceService.class);
     private static final String COMPANY_LICENCE_ID_NOT_FOUND = "Il contratto con id %d non esiste";
 
+    private static final String EMAIL_BAD_REQUEST = "Non è possibile mandare l'email perché non esiste data di scadenza";
+
+    private static final Date nullDate = Date.from(LocalDate.of(2100, 1, 1)
+            .atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+
+
     public CompanyLicenceService(SessionService sessionService, CompanyLicenceRepository companyLicenceRepository, CompanyService companyService, LicenceService licenceService, CompanyLicenceSpecificationsFactory companyLicenceSpecificationsFactory, LicenceExpiryEmailService emailService) {
         super(sessionService, LoggerFactory.getLogger(CompanyLicenceService.class));
         this.companyLicenceRepository = companyLicenceRepository;
@@ -60,12 +66,6 @@ public class CompanyLicenceService extends BasicService {
         Licence licence = licenceService.getById(companyLicence.getLicence().getId());
         String directory = CompanyLicence.computeDirectory(company, licence);
 
-        if(companyLicence.getExpiryDate() == null) {
-            Date date = Date.from(LocalDate.of(2100, 1, 1)
-                            .atStartOfDay()
-                                    .atZone(ZoneId.systemDefault()).toInstant());
-            companyLicence.setExpiryDate(date);
-        }
 
         try {
             Path path = Paths.get(ARCHIVE_DIRECTORY + directory);
@@ -73,7 +73,11 @@ public class CompanyLicenceService extends BasicService {
 
             companyLicence.setDirectory(directory);
             companyLicence = save(companyLicenceRepository, companyLicence);
-            notifyCompany(companyLicence);
+
+            notifyCompany(getById(companyLicence.getId()));
+
+            if(companyLicence.isEmailSent())
+                companyLicence = save(companyLicenceRepository, companyLicence);
 
             return companyLicence;
         } catch (IOException e) {
@@ -150,6 +154,7 @@ public class CompanyLicenceService extends BasicService {
             return filter.map(companyLicenceFilter ->
                     companyLicenceRepository.findAll(getSpecificationForAdvancedSearch(companyLicenceFilter), pageable)
             ).orElseGet(() -> companyLicenceRepository.findAll(pageable));
+
         } catch (PropertyReferenceException ex) {
             String message = String.format(INVALID_SEARCH_CRITERIA, ex.getMessage());
             logger.debug(message);
@@ -163,7 +168,12 @@ public class CompanyLicenceService extends BasicService {
 
     public CompanyLicence sendEmailById(Long id) {
         CompanyLicence companyLicence = getById(companyLicenceRepository,id, COMPANY_LICENCE_ID_NOT_FOUND);
-        emailService.notifyCompanyAboutLicence(companyLicence);
+
+        if(companyLicence.getExpiryDate() != null)
+            emailService.notifyCompanyAboutLicence(companyLicence);
+        else
+            throw buildEmailBadRequestException();
+
         return companyLicence;
     }
 
@@ -179,7 +189,7 @@ public class CompanyLicenceService extends BasicService {
         if(companyLicence.getExpiryDate() != null) {
             LocalDate expiryDate = getLocalDate(companyLicence.getExpiryDate());
 
-            if (expiryDate != null && !companyLicence.isEmailSent() && !expiryDate.isAfter(notificationDate)) {
+            if (!companyLicence.isEmailSent() && !expiryDate.isAfter(notificationDate)) {
                 emailService.notifyCompanyAboutLicence(companyLicence);
                 companyLicence.setEmailSent(true);
                 save(companyLicenceRepository, companyLicence);
@@ -191,4 +201,11 @@ public class CompanyLicenceService extends BasicService {
     public List<CompanyLicence> getAllByCompanyId(Long id) {
         return companyLicenceRepository.findAllByCompanyId(id);
     }
+
+
+    protected ResponseStatusException buildEmailBadRequestException() {
+        logger.debug(EMAIL_BAD_REQUEST);
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, EMAIL_BAD_REQUEST);
+    }
+
 }
