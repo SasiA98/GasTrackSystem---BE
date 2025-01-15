@@ -1,4 +1,4 @@
-# GAS TRACK SYSTEM - BE
+# Gas Track System - BE
 
 management-tool back-end
 
